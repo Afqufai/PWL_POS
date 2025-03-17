@@ -6,6 +6,8 @@
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
+                <button onclick="modalAction('{{ url('/user/create_ajax') }}')"
+                class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
             </div>
         </div>
         <div class="card-body">
@@ -23,7 +25,7 @@
                             <select class="form-control" name="level_id" id="level_id" required>
                                 <option value="">- Semua -</option>
                                 @foreach ($level as $item)
-                                    <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>                                    
+                                    <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
                                 @endforeach
                             </select>
                             <small class="form-text text-muted">Level Pengguna</small>
@@ -44,6 +46,9 @@
             </table>
         </div>
     </div>
+
+    <div id="modal-tambah" class="modal fade animate shake" tabindex="-1" role="dialog" databackdrop="static"
+        data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection
 
 @push('css')
@@ -51,15 +56,32 @@
 
 @push('js')
     <script>
+        function modalAction(url) {
+            $("#modal-tambah").html("");
+            $.get(url, function(response) {
+                $("#modal-tambah").html(response);
+                $("#modal-tambah").modal("show");
+            });
+        }
+        $('#modal-tambah').on('hidden.bs.modal', function () {
+            $("#modal-tambah .modal-content").html("");
+        });
+
+        var dataUser;
         $(document).ready(function () {
-            var dataUser = $('#table_user').DataTable({
+            dataUser = $('#table_user').DataTable({
                 serverSide: true,
                 ajax: {
                     "url": "{{ url('user/list') }}",
                     "dataType": "json",
                     "type": "POST",
-                    "data" : function (d) {
-                        d.level_id = $('#level_id').val();
+                    "data": function (d) {
+                        if ($('#level_id').length) {
+                            d.level_id = $('#level_id').val();
+                        } else {
+                            console.error("Elemen dengan ID 'level_id' tidak ditemukan.");
+                            d.level_id = null;
+                        }
                     }
                 },
                 columns: [
