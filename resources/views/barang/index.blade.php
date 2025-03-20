@@ -6,6 +6,8 @@
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a>
+                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah
+                    Ajax</button>
             </div>
         </div>
         <div class="card-body">
@@ -31,7 +33,7 @@
                     </div>
                 </div>
             </div>
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_barang">
                 <thead>
                     <tr>
                         <th>No</th>
@@ -44,63 +46,78 @@
                     </tr>
                 </thead>
             </table>
-        @endsection
+
+            <div id="modal-tambah" class="modal fade animate shake" tabindex="-1" role="dialog" databackdrop="static"
+                data-keyboard="false" data-width="75%" aria-hidden="true"></div>
+@endsection
         @push('css')
         @endpush
         @push('js')
-        <script>
-            $(document).ready(function() {
-                var dataUser = $('#table_user').DataTable({
-                    serverSide: true,
-                    ajax: {
-                        "url": "{{ url('barang/list') }}",
-                        "dataType": "json",
-                        "type": "POST",
-                        "data": function(d) {
-                            d.kategori_id = $('#kategori_id').val();
-                            d._token = "{{ csrf_token() }}";
-                        }
-                    },
-                    columns: [{
-                        data: "DT_RowIndex",
-                        className: "text-center",
-                        orderable: false,
-                        searchable: false
-                    }, {
-                        data: "kategori.kategori_nama",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    }, {
-                        data: "barang_kode",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    }, {
-                        data: "barang_nama",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    }, {
-                        data: "harga_beli",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    }, {
-                        data: "harga_jual",
-                        className: "",
-                        orderable: true,
-                        searchable: true
-                    }, {
-                        data: "aksi",
-                        className: "",
-                        orderable: false,
-                        searchable: false
-                    }]
+            <script>
+                function modalAction(url) {
+                    $("#modal-tambah").html("");
+                    $.get(url, function (response) {
+                        $("#modal-tambah").html(response);
+                        $("#modal-tambah").modal("show");
+                    });
+                }
+                $('#modal-tambah').on('hidden.bs.modal', function () {
+                    $("#modal-tambah .modal-content").html("");
                 });
-                $('#kategori_id').on('change', function(){
-                    dataUser.ajax.reload();
-                })
-            });
-        </script>
+
+                var dataBarang;
+                $(document).ready(function () {
+                    dataBarang = $('#table_barang').DataTable({
+                        serverSide: true,
+                        ajax: {
+                            "url": "{{ url('barang/list') }}",
+                            "dataType": "json",
+                            "type": "POST",
+                            "data": function (d) {
+                                d.kategori_id = $('#kategori_id').val();
+                                d._token = "{{ csrf_token() }}";
+                            }
+                        },
+                        columns: [{
+                            data: "DT_RowIndex",
+                            className: "text-center",
+                            orderable: false,
+                            searchable: false
+                        }, {
+                            data: "kategori.kategori_nama",
+                            className: "",
+                            orderable: true,
+                            searchable: true
+                        }, {
+                            data: "barang_kode",
+                            className: "",
+                            orderable: true,
+                            searchable: true
+                        }, {
+                            data: "barang_nama",
+                            className: "",
+                            orderable: true,
+                            searchable: true
+                        }, {
+                            data: "harga_beli",
+                            className: "",
+                            orderable: true,
+                            searchable: true
+                        }, {
+                            data: "harga_jual",
+                            className: "",
+                            orderable: true,
+                            searchable: true
+                        }, {
+                            data: "aksi",
+                            className: "",
+                            orderable: false,
+                            searchable: false
+                        }]
+                    });
+                    $('#kategori_id').on('change', function () {
+                        dataBarang.ajax.reload();
+                    })
+                });
+            </script>
         @endpush

@@ -5,6 +5,8 @@
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('supplier/create') }}">Tambah</a>
+                <button onclick="modalAction('{{ url('/supplier/create_ajax') }}')"
+                class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
             </div>
         </div>
         <div class="card-body">
@@ -27,6 +29,8 @@
             </table>
         </div>
     </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" databackdrop="static"
+        data-keyboard="false" data-width="75%" aria-hidden="true"></div>
 @endsection
 
 @push('css')
@@ -34,8 +38,20 @@
 
 @push('js')
     <script>
+        function modalAction(url) {
+            $("#myModal").html("");
+            $.get(url, function(response) {
+                $("#myModal").html(response);
+                $("#myModal").modal("show");
+            });
+        }
+        $('#myModal').on('hidden.bs.modal', function () {
+            $("#myModal .modal-content").html("");
+        });
+
+        var dataSupplier;
         $(document).ready(function () {
-            var dataSupplier = $('#table_supplier').DataTable({
+            dataSupplier = $('#table_supplier').DataTable({
                 serverSide: true,
                 ajax: {
                     "url": "{{ url('supplier/list') }}",
