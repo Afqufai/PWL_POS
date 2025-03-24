@@ -57,6 +57,31 @@
     </div>
     <!-- ./wrapper -->
 
+    <div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
+        <form action="{{ url('/logout') }}" method="GET" id="logout">
+            @csrf
+            <div id="modal-master" class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Logout</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
+                            Apakah Anda yakin ingin keluar?
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-primary">Batal</button>
+                        <button type="submit" class="btn btn-danger">Ya, Keluar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
     <!-- Bootstrap 4 -->

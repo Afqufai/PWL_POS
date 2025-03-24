@@ -65,6 +65,11 @@
                     <p>Transaksi Penjualan</p>
                 </a>
             </li>
+            
+            <li class="nav-header">Akun</li>
+            <li class="nav-item">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#logout">Logout</button>
+            </li>
         </ul>
     </nav>
 </div>
