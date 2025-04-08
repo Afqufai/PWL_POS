@@ -5,6 +5,8 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
+                <button onclick="modalAction('{{ url('/user/import') }}')" class="btn btn-sm btn-info">Import
+                    Data</button>
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
                 <button onclick="modalAction('{{ url('/user/create_ajax') }}')"
                 class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
@@ -57,15 +59,10 @@
 @push('js')
     <script>
         function modalAction(url) {
-            $("#modal-tambah").html("");
-            $.get(url, function(response) {
-                $("#modal-tambah").html(response);
-                $("#modal-tambah").modal("show");
+            $('#modal-tambah').load(url, function () {
+                $(this).modal('show');
             });
         }
-        $('#modal-tambah').on('hidden.bs.modal', function () {
-            $("#modal-tambah .modal-content").html("");
-        });
 
         var dataUser;
         $(document).ready(function () {

@@ -4,6 +4,8 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
+                <button onclick="modalAction('{{ url('/level/import') }}')" class="btn btn-sm btn-info">Import
+                    Data</button>
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('level/create') }}">Tambah</a>
                 <button onclick="modalAction('{{ url('/level/create_ajax') }}')"
                 class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
@@ -38,15 +40,10 @@
 @push('js')
     <script>
         function modalAction(url) {
-            $("#myModal").html("");
-            $.get(url, function(response) {
-                $("#myModal").html(response);
-                $("#myModal").modal("show");
+            $('#myModal').load(url, function () {
+                $(this).modal('show');
             });
         }
-        $('#myModal').on('hidden.bs.modal', function () {
-            $("#myModal .modal-content").html("");
-        });
 
         var dataLevel;
         $(document).ready(function () {

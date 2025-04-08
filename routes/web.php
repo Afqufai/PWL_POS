@@ -51,6 +51,9 @@ Route::middleware(['auth'])->group(function(){
         
             Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
+
+            Route::get('/import', [LevelController::class, 'import']);
+            Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
         
             Route::delete('/{id}', [LevelController::class, 'destroy']);
         });
@@ -73,6 +76,9 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/{id}/edit', [KategoriController::class, 'edit']);
             Route::put('/{id}', [KategoriController::class, 'update']);
             Route::delete('/{id}', [KategoriController::class, 'destroy']);
+
+            Route::get('/import', [KategoriController::class, 'import']);
+            Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);
         });
         
         Route::group(['prefix' => 'supplier'], function(){
@@ -92,6 +98,9 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/{id}/edit', [SupplierController::class, 'edit']);
             Route::put('/{id}', [SupplierController::class, 'update']);
             Route::delete('/{id}', [SupplierController::class, 'destroy']);
+
+            Route::get('/import', [SupplierController::class, 'import']);
+            Route::post('/import_ajax', [SupplierController::class, 'import_ajax']);
         });
         
         Route::group(['prefix' => 'barang'], function(){
@@ -105,6 +114,10 @@ Route::middleware(['auth'])->group(function(){
         
             Route::get("/", [BarangController::class, 'index']);
             Route::post('/list', [BarangController::class, 'list']);
+
+            Route::get('/import', [BarangController::class, 'import']);
+            Route::post('/import_ajax', [BarangController::class, 'import_ajax']);
+
             Route::get('/create', [BarangController::class, 'create']);
             Route::post('/', [BarangController::class, 'store']);
             Route::get('/{id}', [BarangController::class, 'show']);
@@ -133,6 +146,9 @@ Route::middleware(['auth'])->group(function(){
         
             Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
+
+            Route::get('/import', [UserController::class, 'import']);
+            Route::post('/import_ajax', [UserController::class, 'import_ajax']);
         
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });

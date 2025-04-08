@@ -5,6 +5,8 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
+                <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-sm btn-info">Import
+                    Barang</button>
                 <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a>
                 <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah
                     Ajax</button>
@@ -55,69 +57,82 @@
         @push('js')
             <script>
                 function modalAction(url) {
-                    $("#modal-tambah").html("");
-                    $.get(url, function (response) {
-                        $("#modal-tambah").html(response);
-                        $("#modal-tambah").modal("show");
+                    $('#modal-tambah').load(url, function () {
+                        $(this).modal('show');
                     });
                 }
-                $('#modal-tambah').on('hidden.bs.modal', function () {
-                    $("#modal-tambah .modal-content").html("");
-                });
-
-                var dataBarang;
+                var tableBarang;
                 $(document).ready(function () {
-                    dataBarang = $('#table_barang').DataTable({
+                    tableBarang = $('#table_barang').DataTable({
+                        processing: true,
                         serverSide: true,
                         ajax: {
                             "url": "{{ url('barang/list') }}",
                             "dataType": "json",
                             "type": "POST",
                             "data": function (d) {
-                                d.kategori_id = $('#kategori_id').val();
-                                d._token = "{{ csrf_token() }}";
+                                d.filter_kategori = $('.filter_kategori').val();
                             }
                         },
                         columns: [{
                             data: "DT_RowIndex",
                             className: "text-center",
+                            width: "5%",
                             orderable: false,
                             searchable: false
                         }, {
-                            data: "kategori.kategori_nama",
-                            className: "",
-                            orderable: true,
-                            searchable: true
-                        }, {
                             data: "barang_kode",
                             className: "",
+                            width: "10%",
                             orderable: true,
                             searchable: true
                         }, {
                             data: "barang_nama",
                             className: "",
+                            width: "37%",
                             orderable: true,
-                            searchable: true
+                            searchable: true,
                         }, {
                             data: "harga_beli",
                             className: "",
+                            width: "10%",
                             orderable: true,
-                            searchable: true
+                            searchable: false,
+                            render: function (data, type, row) {
+                                return new Intl.NumberFormat('id-ID').format(data);
+                            }
                         }, {
                             data: "harga_jual",
                             className: "",
+                            width: "10%",
                             orderable: true,
-                            searchable: true
+                            searchable: false,
+                            render: function (data, type, row) {
+                                return new Intl.NumberFormat('id-ID').format(data);
+                            }
+                        }, {
+                            data: "kategori.kategori_nama",
+                            className: "",
+                            width: "14%",
+                            orderable: true,
+                            searchable: false
                         }, {
                             data: "aksi",
-                            className: "",
+                            className: "text-center",
+                            width: "14%",
                             orderable: false,
                             searchable: false
-                        }]
+                        }
+                        ]
                     });
-                    $('#kategori_id').on('change', function () {
-                        dataBarang.ajax.reload();
-                    })
+                    $('#table-barang_filter input').unbind().bind().on('keyup', function (e) {
+                        if (e.keyCode == 13) { // enter key
+                            tableBarang.search(this.value).draw();
+                        }
+                    });
+                    $('.filter_kategori').change(function () {
+                        tableBarang.draw();
+                    });
                 });
             </script>
         @endpush
