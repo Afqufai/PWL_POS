@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
@@ -31,6 +32,12 @@ Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 //Access ke ADMIN ONLY
 Route::middleware(['auth'])->group(function(){
     Route::get('/', [WelcomeController::class, 'index']);
+
+    Route::group(['prefix' => 'profile'], function(){
+        Route::get('/', [ProfileController::class, 'show']);
+        Route::get('/edit', [ProfileController::class, 'edit']);
+        Route::put('/', [ProfileController::class, 'update']);
+    });
 
     Route::middleware(['authorize:ADM'])->group(function(){
         Route::group(['prefix' => 'level'], function(){
