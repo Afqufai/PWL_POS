@@ -7,9 +7,12 @@
             <div class="card-tools">
                 <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-sm btn-info">Import
                     Barang</button>
-                    <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-fileexcel"></i> Export Barang</a>
-                    <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-filepdf"></i> Export Barang (PDF)</a>
-                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah</button>
+                    <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-fileexcel"></i> Export
+                    Barang</a>
+                <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-filepdf"></i> Export
+                    Barang (PDF)</a>
+                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')"
+                    class="btn btn-sm btn-success mt-1">Tambah</button>
             </div>
         </div>
         <div class="card-body">
@@ -71,7 +74,12 @@
                             "dataType": "json",
                             "type": "POST",
                             "data": function (d) {
-                                d.filter_kategori = $('.filter_kategori').val();
+                                if ($('#kategori_id').length) {
+                                    d.kategori_id = $('#kategori_id').val();
+                                } else {
+                                    console.log('kategori_id tidak ada');
+                                    d.kategori_id = null;
+                                }
                             }
                         },
                         columns: [{
@@ -79,6 +87,12 @@
                             className: "text-center",
                             width: "5%",
                             orderable: false,
+                            searchable: false
+                        }, {
+                            data: "kategori.kategori_nama",
+                            className: "",
+                            width: "14%",
+                            orderable: true,
                             searchable: false
                         }, {
                             data: "barang_kode",
@@ -111,12 +125,6 @@
                                 return new Intl.NumberFormat('id-ID').format(data);
                             }
                         }, {
-                            data: "kategori.kategori_nama",
-                            className: "",
-                            width: "14%",
-                            orderable: true,
-                            searchable: false
-                        }, {
                             data: "aksi",
                             className: "text-center",
                             width: "14%",
@@ -125,13 +133,9 @@
                         }
                         ]
                     });
-                    $('#table-barang_filter input').unbind().bind().on('keyup', function (e) {
-                        if (e.keyCode == 13) { // enter key
-                            tableBarang.search(this.value).draw();
-                        }
-                    });
-                    $('.filter_kategori').change(function () {
-                        tableBarang.draw();
+
+                    $('#kategori_id').change(function () {
+                        tableBarang.ajax.reload();
                     });
                 });
             </script>

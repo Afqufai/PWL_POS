@@ -71,21 +71,20 @@
                 </a>
             </li>
             <li class="nav-header">Data Transaksi</li>
-            <li class="nav-item disabled">
+            <li class="nav-item">
                 <a href="{{ url('/stok') }}" class="nav-link {{ ($activeMenu == 'stok') ?
     'active' : '' }} ">
                     <i class="nav-icon fas fa-cubes"></i>
                     <p>Stok Barang</p>
                 </a>
             </li>
-            <li class="nav-item disabled">
+            <li class="nav-item">
                 <a href="{{ url('/penjualan') }}" class="nav-link {{ ($activeMenu ==
     'penjualan') ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-cash-register"></i>
                     <p>Transaksi Penjualan</p>
                 </a>
             </li>
-
             <li class="nav-header">Akun</li>
             <li class="nav-item">
                 <button class="btn btn-danger" data-toggle="modal" data-target="#logout">Logout</button>

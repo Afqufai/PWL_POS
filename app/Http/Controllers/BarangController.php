@@ -24,9 +24,8 @@ class BarangController extends Controller
             'title' => 'Daftar barang yang terdaftar dalam sistem'
         ];
         $activeMenu = 'barang';
-        $barang = BarangModel::all();
         $kategori = KategoriModel::all();
-        return view('barang.index', ['breadcrumb' => $breadCrumb, 'page' => $page, 'barang' => $barang, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
+        return view('barang.index', ['breadcrumb' => $breadCrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
     }
 
     public function list(Request $request)
@@ -333,10 +332,11 @@ class BarangController extends Controller
         return redirect('/');
     }
 
-    public function export_excel(){
+    public function export_excel()
+    {
         $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
-        ->orderBy('kategori_id')    
-        ->with('kategori')->get();
+            ->orderBy('kategori_id')
+            ->with('kategori')->get();
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
@@ -382,10 +382,11 @@ class BarangController extends Controller
         exit;
     }
 
-    public function export_pdf(){
+    public function export_pdf()
+    {
         $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
-        ->orderBy('kategori_id')    
-        ->with('kategori')->get();
+            ->orderBy('kategori_id')
+            ->with('kategori')->get();
 
         $pdf = Pdf::loadView('barang.export_pdf', ['barang' => $barang]);
         $pdf->setPaper('A4', 'portrait');
