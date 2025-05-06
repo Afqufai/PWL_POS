@@ -41,9 +41,9 @@ Route::delete('users/{user}', [\App\Http\Controllers\Api\UserController::class, 
 
 //ROUTE BARANG
 Route::get('stuff', [\App\Http\Controllers\Api\BarangController::class, 'index']);
-Route::post('stuff', [\App\Http\Controllers\Api\BarangController::class, 'store']);
+Route::post('stuff/add', [\App\Http\Controllers\Api\BarangController::class, 'store']);
 Route::get('stuff/{barang}', [\App\Http\Controllers\Api\BarangController::class, 'show']);
-Route::put('stuff/{barang}', [\App\Http\Controllers\Api\BarangController::class, 'update']);
+Route::put('stuff/{barang}/update', [\App\Http\Controllers\Api\BarangController::class, 'update']);
 Route::delete('stuff/{barang}', [\App\Http\Controllers\Api\BarangController::class, 'destroy']);
 
 //ROUTE KATEGORI
@@ -52,3 +52,10 @@ Route::post('categories', [\App\Http\Controllers\Api\KategoriController::class, 
 Route::get('categories/{kategori}', [\App\Http\Controllers\Api\KategoriController::class, 'show']);
 Route::put('categories/{kategori}', [\App\Http\Controllers\Api\KategoriController::class, 'update']);
 Route::delete('categories/{kategori}', [\App\Http\Controllers\Api\KategoriController::class, 'destroy']);
+
+//ROUTE TRANSAKSI
+Route::get('transactions', [\App\Http\Controllers\Api\PenjualanController::class, 'index']);
+Route::post('transactions', [\App\Http\Controllers\Api\PenjualanController::class, 'store']);
+Route::get('transactions/{penjualan}', [\App\Http\Controllers\Api\PenjualanController::class, 'show']);
+Route::put('transactions/{penjualan}/edit', [\App\Http\Controllers\Api\PenjualanController::class, 'update']);
+Route::delete('transactions/{penjualan}/delete', [\App\Http\Controllers\Api\PenjualanController::class, 'destroy']);
